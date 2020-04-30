@@ -1,8 +1,8 @@
 package test.pivotal.pal.tracker;
 
-import io.pivotal.pal.tracker.TimeEntry;
 import io.pivotal.pal.tracker.TimeEntryController;
 import io.pivotal.pal.tracker.TimeEntryRepository;
+import io.pivotal.pal.tracker.TimeEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -29,11 +29,12 @@ public class TimeEntryControllerTest {
 
     @Test
     public void testCreate() {
+        long timeEntryId=0;
         long projectId = 123L;
         long userId = 456L;
-        TimeEntry timeEntryToCreate = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8);
+        TimeEntry timeEntryToCreate = new TimeEntry(timeEntryId,projectId, userId, LocalDate.parse("2017-01-08"), 8);
 
-        long timeEntryId = 1L;
+        timeEntryId = 1L;
         TimeEntry expectedResult = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-08"), 8);
         doReturn(expectedResult)
             .when(timeEntryRepository)
@@ -113,7 +114,11 @@ public class TimeEntryControllerTest {
             .when(timeEntryRepository)
             .update(eq(nonExistentTimeEntryId), any(TimeEntry.class));
 
-        ResponseEntity response = controller.update(nonExistentTimeEntryId, new TimeEntry());
+        long projectId = 0;
+        long userId = 0;
+        int i=0;
+
+        ResponseEntity response = controller.update(nonExistentTimeEntryId, new TimeEntry(nonExistentTimeEntryId,projectId,userId,LocalDate.parse("2017-01-07"),i));
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
