@@ -84,6 +84,7 @@ public class TimeEntryControllerTest {
 
         ResponseEntity<List<TimeEntry>> response = controller.list();
 
+
         verify(timeEntryRepository).list();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
